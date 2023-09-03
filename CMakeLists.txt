@@ -1,27 +1,6 @@
-cmake_minimum_required(VERSION 3.0.0)
-project(punchClock VERSION 0.1.0)
-
-## set CPACK_PROJECT_NAME
-if(DEFINED ENV{CMAKE_PROJECT_NAME})
-  message("Use environment project name: " $ENV{CMAKE_PROJECT_NAME})
-  set(CPACK_PROJECT_NAME $ENV{CMAKE_PROJECT_NAME})
-else()
-  set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-  set(ENV{CMAKE_PROJECT_NAME} ${CPACK_PROJECT_NAME})
-endif()
-
-## set CPACK_PROJECT_VERSION
-if(DEFINED ENV{CMAKE_PROJECT_VERSION})
-  message("Use environment project version: " $ENV{CMAKE_PROJECT_NAME})
-  set(CPACK_PROJECT_VERSION $ENV{CMAKE_PROJECT_VERSION})
-else()
-  set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-  set(ENV{CMAKE_PROJECT_VERSION} ${CPACK_PROJECT_VERSION})
-endif()
-
-if(CMAKE_TOOLCHAIN_FILE)
-  MESSAGE(STATUS "Using toolchain file: ${CMAKE_TOOLCHAIN_FILE}")
-endif()
+cmake_minimum_required(VERSION 3.13)
+project(unity-is-impossible)
+set(UNIFY_IS_IMPOSSIBLE_VERSION 0.0.2)
 
 ## set Compiler Flags.
 include(CheckCXXCompilerFlag)
@@ -46,13 +25,6 @@ elseif ("${CMAKE_C_COMPILER_ID}" STREQUAL "Intel")
 elseif ("${CMAKE_C_COMPILER_ID}" STREQUAL "MSVC")
 endif()
 
-set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} -fno-short-enums")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-short-enums")
-
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
 SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/linux_pc)
 
 if (${CMAKE_BUILD_TYPE} STREQUAL "DEBUG")
@@ -68,24 +40,36 @@ include(CheckCSourceRuns)
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
 
-# pkg_check_modules(LIBUSB REQUIRED libusb-1.0)
-# include_directories(${LIBUSB_INCLUDE_DIRS})
-# link_directories(${LIBUSB_LIBRARY_DIRS})
-# link_libraries(${LIBUSB_LIBRARIES})
+option(BUILD_UI "Builds the ui subproject" ON)
+option(BUILD_TEST "Enable to build ui test code" OFF)
 
-set(PTHREAD_CFLAGS "-D_REENTRANT")
-set(PTHREAD_LDFLAGS "-pthread")
-set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} ${PTHREAD_CFLAGS} ${PTHREAD_LDFLAGS}")
-CHECK_C_SOURCE_COMPILES("
-  #include <pthread.h>
-  int main(int argc, char** argv) {
-    pthread_attr_t type;
-    pthread_attr_init(&type);
-    return 0;
-  }" HAVE_PTHREADS)
-message("HAVE_PTHREADS:" ${HAVE_PTHREADS})
+if(BUILD_UI)
+  # Include .h ###################################################################
+  include_directories(${CMAKE_SOURCE_DIR}/src/.)
+  include_directories(${CMAKE_SOURCE_DIR}/src/module)
+  include_directories(${CMAKE_SOURCE_DIR}/src/module/utils)
+  include_directories(${CMAKE_SOURCE_DIR}/src/module/types)
+  include_directories(${CMAKE_SOURCE_DIR}/src/module/types/NDEF)
+  include_directories(${CMAKE_SOURCE_DIR}/src/module/events)
+  include_directories(${CMAKE_SOURCE_DIR}/src/module/resource)
+  include_directories(${CMAKE_SOURCE_DIR}/src/module/resource/audio)
+  include_directories(${CMAKE_SOURCE_DIR}/src/module/resource/font)
+  include_directories(${CMAKE_SOURCE_DIR}/src/module/resource/video)
+  include_directories(${CMAKE_SOURCE_DIR}/src/module/resource/view)
+  include_directories(${CMAKE_SOURCE_DIR}/src/module/signal)
+  include_directories(${CMAKE_SOURCE_DIR}/src/module/task)
+  include_directories(${CMAKE_SOURCE_DIR}/src/module/template)
+  include_directories(${CMAKE_SOURCE_DIR}/src/module/driver/linux-common)
+  include_directories(${CMAKE_SOURCE_DIR}/src/module/driver)
+  include_directories(${CMAKE_SOURCE_DIR}/src/view)
+  include_directories(${CMAKE_SOURCE_DIR}/src/controller)
+  include_directories(${CMAKE_SOURCE_DIR}/src/controller/nfc)
+  include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_subdirectory(3rdparty/googletest)
-add_subdirectory(src)
+  add_subdirectory(src)
 
-add_subdirectory(test)
+  if(BUILD_TEST)
+    add_subdirectory(3rdparty/googletest)
+    add_subdirectory(test)
+  endif() ##! BUILD_TEST
+endif() ##! BUILD_UI

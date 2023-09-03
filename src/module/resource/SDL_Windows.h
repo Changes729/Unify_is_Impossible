@@ -5,7 +5,6 @@
 /* Public include ------------------------------------------------------------*/
 #include <string>
 
-#include "SDL_events.h"
 #include "render/SDL_renderer.h"
 #include "windows_manager.h"
 
@@ -14,6 +13,7 @@
 /* Public typedef ------------------------------------------------------------*/
 struct SDL_Window;
 struct SDL_Texture;
+struct SDL_Surface;
 
 /* Public template -----------------------------------------------------------*/
 /* Public function prototypes ------------------------------------------------*/
