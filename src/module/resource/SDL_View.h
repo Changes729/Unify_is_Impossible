@@ -5,7 +5,6 @@
 /* Public include ------------------------------------------------------------*/
 #include "SDL_Widget.h"
 #include "SDL_Windows.h"
-#include "config.h"
 #include "view_draw.h"
 
 /* Public namespace ----------------------------------------------------------*/

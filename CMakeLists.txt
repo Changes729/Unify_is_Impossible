@@ -85,5 +85,7 @@ CHECK_C_SOURCE_COMPILES("
   }" HAVE_PTHREADS)
 message("HAVE_PTHREADS:" ${HAVE_PTHREADS})
 
-add_subdirectory(3rdparty/json)
+add_subdirectory(3rdparty/googletest)
 add_subdirectory(src)
+
+add_subdirectory(test)

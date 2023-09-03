@@ -40,7 +40,7 @@ find_package(SDL2)
 include_directories(${SDL2_INCLUDE_DIRS})
 link_directories(${SDL2_LIBRARY_DIRS})
 
-find_package(SDL2IMAGE)
+pkg_check_modules(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
 include_directories(${SDL2IMAGE_INCLUDE_DIRS})
 link_directories(${SDL2IMAGE_LIBRARY_DIRS})
 
@@ -138,12 +138,12 @@ file(GLOB MAIN_C
 if(APPLE)
   add_executable(${CMAKE_PROJECT_NAME} ${MAIN_C} ${VIEW_C} ${CONTROLLER_C} ${MODULE_C} ${RENDER_C})
   target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE)
-  target_link_libraries(${CMAKE_PROJECT_NAME} nlohmann_json::nlohmann_json ${LIBSDL} ${LIBAV} curl)
+  target_link_libraries(${CMAKE_PROJECT_NAME}  ${LIBSDL} ${LIBAV} curl)
 else()
   add_executable(${CMAKE_PROJECT_NAME} ${MAIN_C} ${VIEW_C} ${CONTROLLER_C} ${MODULE_C} ${RENDER_C}
     ${EMBED_C} ${MIFARE_C} ${MFRC522_C} ${NDEF_C} ${NDEF_HELPER_C})
   target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE USE_DRIVER_MFRC522 NO_DEBUG)
-  target_link_libraries(${CMAKE_PROJECT_NAME} nlohmann_json::nlohmann_json pthread gpiod ${LIBSDL} ${LIBAV} curl)
+  target_link_libraries(${CMAKE_PROJECT_NAME}  pthread gpiod ${LIBSDL} ${LIBAV} curl)
 endif()
 
 # install library #################################################################
