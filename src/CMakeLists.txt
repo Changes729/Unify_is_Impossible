@@ -1,4 +1,28 @@
 # Include .h ###################################################################
+set( UiI_INCLUDE_DIR
+  ${CMAKE_SOURCE_DIR}/src/.
+  ${CMAKE_SOURCE_DIR}/src/module
+  ${CMAKE_SOURCE_DIR}/src/module/utils
+  ${CMAKE_SOURCE_DIR}/src/module/types
+  ${CMAKE_SOURCE_DIR}/src/module/types/NDEF
+  ${CMAKE_SOURCE_DIR}/src/module/events
+  ${CMAKE_SOURCE_DIR}/src/module/resource
+  ${CMAKE_SOURCE_DIR}/src/module/resource/audio
+  ${CMAKE_SOURCE_DIR}/src/module/resource/font
+  ${CMAKE_SOURCE_DIR}/src/module/resource/video
+  ${CMAKE_SOURCE_DIR}/src/module/resource/view
+  ${CMAKE_SOURCE_DIR}/src/module/signal
+  ${CMAKE_SOURCE_DIR}/src/module/task
+  ${CMAKE_SOURCE_DIR}/src/module/template
+  ${CMAKE_SOURCE_DIR}/src/module/driver/linux-common
+  ${CMAKE_SOURCE_DIR}/src/module/driver
+  ${CMAKE_SOURCE_DIR}/src/view
+  ${CMAKE_SOURCE_DIR}/src/controller
+  ${CMAKE_SOURCE_DIR}/src/controller/nfc
+  ${CMAKE_CURRENT_BINARY_DIR}
+)
+include_directories(${UiI_INCLUDE_DIR})
+
 # find library #################################################################
 include_directories(${GPIOD_INCLUDE_DIRS})
 link_directories(${GPIOD_LIBRARY_DIRS})
@@ -82,4 +106,5 @@ file(GLOB VIEW_C
 )
 
 add_library(UiI ${VIEW_C} ${CONTROLLER_C} ${MODULE_C} ${RENDER_C})
+target_include_directories(UiI SYSTEM INTERFACE ${UiI_INCLUDE_DIR})
 target_link_libraries(UiI ${LIBSDL} ${LIBAV} curl)
