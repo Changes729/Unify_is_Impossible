@@ -27,11 +27,6 @@ endif()
 
 SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/linux_pc)
 
-if (${CMAKE_BUILD_TYPE} STREQUAL "DEBUG")
-    message("project is in debug mode")
-    add_compile_definitions("__DEBUG")
-endif ()
-
 ## support pkg_check_modules
 find_package(PkgConfig REQUIRED)
 include(CheckSymbolExists)

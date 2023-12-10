@@ -31,7 +31,7 @@ find_package(SDL2)
 include_directories(${SDL2_INCLUDE_DIRS})
 link_directories(${SDL2_LIBRARY_DIRS})
 
-pkg_check_modules(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
+find_package(SDL2_image)
 include_directories(${SDL2IMAGE_INCLUDE_DIRS})
 link_directories(${SDL2IMAGE_LIBRARY_DIRS})
 
@@ -47,13 +47,13 @@ set(LIBSDL
 )
 
 set(LIBAV
-    avdevice
-    avfilter
-    avformat
-    avcodec
-    swresample
-    swscale
-    avutil
+  avdevice
+  avfilter
+  avformat
+  avcodec
+  swresample
+  swscale
+  avutil
 )
 
 # include .c/.cpp ##############################################################
